@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Чайная полка — магазин чая и травяных сборов.">
+  <title>Чайная полка — чай для каждого дня</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+  <header class="site-header">
+    <a class="brand" href="#main">Чайная полка</a>
+    <nav aria-label="Основная навигация">
+      <ul>
+        <li><a href="#catalog">Выбрать чай</a></li>
+        <li><a href="#cart">Корзина (<span id="cart-count">0</span>)</a></li>
+        <li><a href="#delivery">Доставка</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="intro" aria-labelledby="intro-title">
+      <p>Небольшие радости каждый день</p>
+      <h1 id="intro-title">Найдите свой любимый чай</h1>
+      <p>Зелёный, чёрный, улун и травяные сборы — выбирайте под настроение.</p>
+      <a href="#catalog">Перейти к коллекции</a>
+    </section>
+
+    <div class="shop-layout">
+      <section id="catalog" class="catalog" aria-labelledby="catalog-title">
+        <h2 id="catalog-title">Чайная коллекция</h2>
+        <p>Цена указана за одну упаковку.</p>
+        <ul class="catalog__list">
+          <li class="catalog__item">
+            <article class="product-card" aria-labelledby="sencha-title"
+                     data-product-id="sencha" data-name="Сенча «Утренний сад»" data-price="590">
+              <p class="product-card__category">Зелёный чай</p>
+              <h3 id="sencha-title">Сенча «Утренний сад»</h3>
+              <p>Свежий травянистый вкус с мягкой сладостью.</p>
+              <p>Упаковка: 100 г</p>
+              <p class="product-card__price"><data value="590">590 ₽</data></p>
+              <button type="button" class="product-card__add" data-action="add"
+                      aria-label="Добавить в корзину: Сенча «Утренний сад»" disabled>Добавить в корзину</button>
+            </article>
+          </li>
+          <li class="catalog__item">
+            <article class="product-card" aria-labelledby="jasmine-title"
+                     data-product-id="jasmine" data-name="Жасминовая жемчужина" data-price="720">
+              <p class="product-card__category">Зелёный чай</p>
+              <h3 id="jasmine-title">Жасминовая жемчужина</h3>
+              <p>Скрученные листья с нежным ароматом жасмина.</p>
+              <p>Упаковка: 100 г</p>
+              <p class="product-card__price"><data value="720">720 ₽</data></p>
+              <button type="button" class="product-card__add" data-action="add"
+                      aria-label="Добавить в корзину: Жасминовая жемчужина" disabled>Добавить в корзину</button>
+            </article>
+          </li>
+          <li class="catalog__item">
+            <article class="product-card" aria-labelledby="oolong-title"
+                     data-product-id="oolong" data-name="Улун «Тёплый вечер»" data-price="680">
+              <p class="product-card__category">Улун</p>
+              <h3 id="oolong-title">Улун «Тёплый вечер»</h3>
+              <p>Цветочный аромат и долгое мягкое послевкусие.</p>
+              <p>Упаковка: 100 г</p>
+              <p class="product-card__price"><data value="680">680 ₽</data></p>
+              <button type="button" class="product-card__add" data-action="add"
+                      aria-label="Добавить в корзину: Улун «Тёплый вечер»" disabled>Добавить в корзину</button>
+            </article>
+          </li>
+          <li class="catalog__item">
+            <article class="product-card" aria-labelledby="assam-title"
+                     data-product-id="assam" data-name="Ассам «Второй завтрак»" data-price="450">
+              <p class="product-card__category">Чёрный чай</p>
+              <h3 id="assam-title">Ассам «Второй завтрак»</h3>
+              <p>Насыщенный чай с солодовыми нотами.</p>
+              <p>Упаковка: 100 г</p>
+              <p class="product-card__price"><data value="450">450 ₽</data></p>
+              <button type="button" class="product-card__add" data-action="add"
+                      aria-label="Добавить в корзину: Ассам «Второй завтрак»" disabled>Добавить в корзину</button>
+            </article>
+          </li>
+          <li class="catalog__item">
+            <article class="product-card" aria-labelledby="rooibos-title"
+                     data-product-id="rooibos" data-name="Ройбуш с апельсином" data-price="510">
+              <p class="product-card__category">Травяной сбор</p>
+              <h3 id="rooibos-title">Ройбуш с апельсином</h3>
+              <p>Мягкий напиток без кофеина с цитрусовым ароматом.</p>
+              <p>Упаковка: 100 г</p>
+              <p class="product-card__price"><data value="510">510 ₽</data></p>
+              <button type="button" class="product-card__add" data-action="add"
+                      aria-label="Добавить в корзину: Ройбуш с апельсином" disabled>Добавить в корзину</button>
+            </article>
+          </li>
+          <li class="catalog__item">
+            <article class="product-card" aria-labelledby="mint-title"
+                     data-product-id="mint" data-name="Мята и чабрец" data-price="390">
+              <p class="product-card__category">Травяной сбор</p>
+              <h3 id="mint-title">Мята и чабрец</h3>
+              <p>Ароматный сбор для спокойного вечера.</p>
+              <p>Упаковка: 80 г</p>
+              <p class="product-card__price"><data value="390">390 ₽</data></p>
+              <button type="button" class="product-card__add" data-action="add"
+                      aria-label="Добавить в корзину: Мята и чабрец" disabled>Добавить в корзину</button>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <aside id="cart" class="cart" aria-labelledby="cart-title">
+        <h2 id="cart-title">Ваша корзина</h2>
+        <p id="cart-empty">Пока здесь пусто. Выберите чай в каталоге.</p>
+        <ul id="cart-items" class="cart__items" hidden></ul>
+        <p class="cart__total">Итого: <output id="cart-total" aria-live="polite">0 ₽</output></p>
+        <button id="checkout-button" type="button" disabled>Оформить заказ</button>
+      </aside>
+    </div>
+
+    <section id="checkout" class="checkout" aria-labelledby="checkout-title">
+      <h2 id="checkout-title">Оформление заказа</h2>
+      <p>Все поля обязательны для заполнения.</p>
+      <form id="order-form">
+        <fieldset>
+          <legend>Получатель</legend>
+          <p>
+            <label for="first-name">Имя</label>
+            <input id="first-name" name="firstName" type="text" autocomplete="given-name" maxlength="60" required>
+          </p>
+          <p>
+            <label for="last-name">Фамилия</label>
+            <input id="last-name" name="lastName" type="text" autocomplete="family-name" maxlength="80" required>
+          </p>
+          <p>
+            <label for="phone">Контактный номер телефона</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="30" required>
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Куда доставить</legend>
+          <label for="address">Адрес доставки</label>
+          <textarea id="address" name="address" autocomplete="street-address" rows="3" maxlength="300" required></textarea>
+        </fieldset>
+        <button type="submit" disabled>Создать заказ</button>
+      </form>
+      <p id="order-status" role="status"></p>
+    </section>
+
+    <section id="delivery" class="delivery" aria-labelledby="delivery-title">
+      <h2 id="delivery-title">Доставка</h2>
+      <p>В адресе укажите город, улицу, дом и квартиру.</p>
+      <p>Учебный магазин</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Чайная полка</p>
+    <a href="#main">Наверх</a>
+  </footer>
+</body>
+</html>
