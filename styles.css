@@ -1,0 +1,103 @@
+/* Общие настройки */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 16px/1.5 Arial, sans-serif;
+  color: #252525;
+  background: #f3f3f3;
+}
+main, body > header, footer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+h1 { font-size: 28px; }
+h2 { font-size: 23px; }
+h3 { font-size: 19px; }
+a { color: #37613e; }
+section, aside { margin-bottom: 24px; }
+button, input, textarea { font: inherit; }
+button {
+  padding: 8px 14px;
+  border: 1px solid #37613e;
+  background: #37613e;
+  color: white;
+  cursor: pointer;
+}
+button:disabled {
+  background: #e2e2e2;
+  border-color: #b5b5b5;
+  color: #555;
+  cursor: not-allowed;
+}
+label { display: block; margin-bottom: 5px; }
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #999;
+  background: white;
+}
+textarea { resize: vertical; }
+form { max-width: 550px; }
+footer { border-top: 1px solid #ccc; }
+/* Ссылка для перехода к содержимому с клавиатуры */
+.skip-link { position: absolute; left: -10000px; }
+.skip-link:focus {
+  left: 10px;
+  top: 10px;
+  padding: 8px;
+  background: white;
+}
+:focus-visible { outline: 2px solid #37613e; outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* Шапка и навигация */
+.site-header { background: #e1ebdf; }
+.brand { font-size: 24px; font-weight: bold; text-decoration: none; }
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+.intro { padding-bottom: 15px; border-bottom: 1px solid #ccc; }
+/* Каталог: три карточки в строке */
+.catalog__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+}
+.product-card__category { color: #52634e; }
+.product-card__price, .cart__total { font-weight: bold; }
+.product-card__add { margin-top: auto; }
+.cart, .checkout {
+  padding: 20px;
+  border: 1px solid #ccc;
+  background: white;
+}
+fieldset {
+  min-width: 0;
+  margin: 0 0 16px;
+  padding: 12px;
+  border: 1px solid #ccc;
+}
+/* Планшет: две колонки, телефон: одна */
+@media (max-width: 800px) {
+  .catalog__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 500px) {
+  .catalog__list { grid-template-columns: 1fr; }
+  main, body > header, footer { padding: 12px; }
+}
