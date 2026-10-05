@@ -9,6 +9,7 @@ const orderForm = document.querySelector('#order-form');
 const orderStatus = document.querySelector('#order-status');
 const storageMessage = document.querySelector('#storage-message');
 const storageKey = 'tea-shop-cart';
+const orderFields = orderForm.querySelectorAll('input, textarea');
 
 
 function formatPrice(value) {
@@ -48,6 +49,7 @@ function removeItem(id) {
 }
 
 function renderCart() {
+  const focusedId = document.activeElement.id;
   cartList.replaceChildren();
   let total = 0;
   let count = 0;
@@ -64,6 +66,7 @@ function renderCart() {
     controls.className = 'cart-controls';
     const minus = document.createElement('button');
     minus.type = 'button';
+    minus.id = 'minus-' + item.id;
     minus.textContent = '−';
     minus.disabled = item.quantity === 1;
     minus.setAttribute('aria-label', 'Уменьшить количество: ' + item.name);
@@ -71,10 +74,12 @@ function renderCart() {
     quantity.textContent = item.quantity + ' шт.';
     const plus = document.createElement('button');
     plus.type = 'button';
+    plus.id = 'plus-' + item.id;
     plus.textContent = '+';
     plus.setAttribute('aria-label', 'Увеличить количество: ' + item.name);
     const remove = document.createElement('button');
     remove.type = 'button';
+    remove.id = 'remove-' + item.id;
     remove.textContent = 'Удалить';
     remove.setAttribute('aria-label', 'Удалить: ' + item.name);
     const subtotal = document.createElement('p');
@@ -104,6 +109,14 @@ function renderCart() {
   if (cart.length === 0) checkoutSection.hidden = true;
   orderStatus.textContent = '';
   saveCart();
+  const focusedButton = document.getElementById(focusedId);
+  if (focusedButton && !focusedButton.disabled) {
+    focusedButton.focus();
+  } else if (focusedId.startsWith('minus-')) {
+    document.getElementById(focusedId.replace('minus-', 'plus-')).focus();
+  } else if (focusedId.startsWith('remove-')) {
+    document.querySelector('[data-action="add"]').focus();
+  }
 }
 
 function saveCart() {
@@ -150,19 +163,23 @@ checkoutButton.addEventListener('click', function () {
   document.querySelector('#first-name').focus();
 });
 
-orderForm.querySelectorAll('input, textarea').forEach(function (field) {
+orderFields.forEach(function (field) {
   field.addEventListener('input', function () {
     field.setCustomValidity('');
   });
 });
-orderForm.addEventListener('submit', function (event) {
-  event.preventDefault();
-  if (cart.length === 0) return;
-  orderForm.querySelectorAll('input, textarea').forEach(function (field) {
+function validateOrder() {
+  orderFields.forEach(function (field) {
     field.value = field.value.trim();
     field.setCustomValidity(field.value ? '' : 'Заполните поле.');
   });
-  if (!orderForm.reportValidity()) return;
+  return orderForm.reportValidity();
+}
+
+orderForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (cart.length === 0) return;
+  if (!validateOrder()) return;
   cart.length = 0;
   renderCart();
   orderForm.reset();

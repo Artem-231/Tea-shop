@@ -90,7 +90,7 @@ fieldset {
   padding: 12px;
   border: 1px solid #ccc;
 }
-
+/* Планшет: две колонки, телефон: одна */
 @media (max-width: 800px) {
   .catalog__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -99,6 +99,7 @@ fieldset {
   main, body > header, footer { padding: 12px; }
 }
 
+/* Элементы корзины */
 .cart__items { padding: 0; list-style: none; }
 .cart-row { padding: 12px 0; border-bottom: 1px solid #ccc; }
 .cart-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
