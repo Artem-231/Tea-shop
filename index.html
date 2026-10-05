@@ -115,11 +115,12 @@
         <p id="cart-empty">Пока здесь пусто. Выберите чай в каталоге.</p>
         <ul id="cart-items" class="cart__items" hidden></ul>
         <p class="cart__total">Итого: <output id="cart-total" aria-live="polite">0 ₽</output></p>
-        <button id="checkout-button" type="button" disabled>Оформить заказ</button>
+        <p id="storage-message" role="status"></p>
+      <button id="checkout-button" type="button" disabled>Оформить заказ</button>
       </aside>
     </div>
 
-    <section id="checkout" class="checkout" aria-labelledby="checkout-title">
+    <section hidden id="checkout" class="checkout" aria-labelledby="checkout-title">
       <h2 id="checkout-title">Оформление заказа</h2>
       <p>Все поля обязательны для заполнения.</p>
       <form id="order-form">
@@ -143,10 +144,10 @@
           <label for="address">Адрес доставки</label>
           <textarea id="address" name="address" autocomplete="street-address" rows="3" maxlength="300" required></textarea>
         </fieldset>
-        <button type="submit" disabled>Создать заказ</button>
+        <button type="submit">Создать заказ</button>
       </form>
-      <p id="order-status" role="status"></p>
     </section>
+    <p id="order-status" role="status" tabindex="-1"></p>
 
     <section id="delivery" class="delivery" aria-labelledby="delivery-title">
       <h2 id="delivery-title">Доставка</h2>

@@ -1,4 +1,3 @@
-/* Общие настройки */
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -40,7 +39,6 @@ input, textarea {
 textarea { resize: vertical; }
 form { max-width: 550px; }
 footer { border-top: 1px solid #ccc; }
-/* Ссылка для перехода к содержимому с клавиатуры */
 .skip-link { position: absolute; left: -10000px; }
 .skip-link:focus {
   left: 10px;
@@ -51,7 +49,6 @@ footer { border-top: 1px solid #ccc; }
 :focus-visible { outline: 2px solid #37613e; outline-offset: 3px; }
 [hidden] { display: none !important; }
 
-/* Шапка и навигация */
 .site-header { background: #e1ebdf; }
 .brand { font-size: 24px; font-weight: bold; text-decoration: none; }
 nav ul {
@@ -93,7 +90,7 @@ fieldset {
   padding: 12px;
   border: 1px solid #ccc;
 }
-/* Планшет: две колонки, телефон: одна */
+
 @media (max-width: 800px) {
   .catalog__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

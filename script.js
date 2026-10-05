@@ -1,15 +1,20 @@
-// Корзина
 const cart = [];
 const cartList = document.querySelector('#cart-items');
 const emptyMessage = document.querySelector('#cart-empty');
 const totalOutput = document.querySelector('#cart-total');
 const countOutput = document.querySelector('#cart-count');
+const checkoutButton = document.querySelector('#checkout-button');
+const checkoutSection = document.querySelector('#checkout');
+const orderForm = document.querySelector('#order-form');
+const orderStatus = document.querySelector('#order-status');
+const storageMessage = document.querySelector('#storage-message');
+const storageKey = 'tea-shop-cart';
+
 
 function formatPrice(value) {
   return value.toLocaleString('ru-RU') + ' ₽';
 }
 
-// Данные товара берём из атрибутов его карточки
 document.querySelectorAll('.product-card').forEach(function (card) {
   const button = card.querySelector('[data-action="add"]');
   button.disabled = false;
@@ -75,7 +80,6 @@ function renderCart() {
     const subtotal = document.createElement('p');
     subtotal.textContent = 'Сумма: ' + formatPrice(item.price * item.quantity);
 
-    // При изменении количества обновляем строку и общую сумму
     minus.addEventListener('click', function () {
       item.quantity -= 1;
       renderCart();
@@ -96,6 +100,75 @@ function renderCart() {
   cartList.hidden = cart.length === 0;
   totalOutput.textContent = formatPrice(total);
   countOutput.textContent = count;
+  checkoutButton.disabled = cart.length === 0;
+  if (cart.length === 0) checkoutSection.hidden = true;
+  orderStatus.textContent = '';
+  saveCart();
 }
 
+function saveCart() {
+  try {
+    const saved = cart.map(function (item) {
+      return { id: item.id, quantity: item.quantity };
+    });
+    localStorage.setItem(storageKey, JSON.stringify(saved));
+    storageMessage.textContent = '';
+  } catch (error) {
+    storageMessage.textContent = 'Не удалось сохранить корзину в этом браузере.';
+  }
+}
+
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    if (!Array.isArray(saved)) return;
+    // Названия и цены берём из каталога, а не из сохранённых данных.
+    document.querySelectorAll('.product-card').forEach(function (card) {
+      const item = saved.find(function (entry) {
+        return entry && entry.id === card.dataset.productId;
+      });
+      const price = Number(card.dataset.price);
+      if (item && Number.isSafeInteger(item.quantity) && item.quantity > 0 &&
+          Number.isSafeInteger(item.quantity * price)) {
+        cart.push({
+          id: card.dataset.productId,
+          name: card.dataset.name,
+          price: price,
+          quantity: item.quantity
+        });
+      }
+    });
+  } catch (error) {
+    cart.length = 0;
+  }
+}
+
+checkoutButton.addEventListener('click', function () {
+  if (cart.length === 0) return;
+  checkoutSection.hidden = false;
+  orderStatus.textContent = '';
+  document.querySelector('#first-name').focus();
+});
+
+orderForm.querySelectorAll('input, textarea').forEach(function (field) {
+  field.addEventListener('input', function () {
+    field.setCustomValidity('');
+  });
+});
+orderForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (cart.length === 0) return;
+  orderForm.querySelectorAll('input, textarea').forEach(function (field) {
+    field.value = field.value.trim();
+    field.setCustomValidity(field.value ? '' : 'Заполните поле.');
+  });
+  if (!orderForm.reportValidity()) return;
+  cart.length = 0;
+  renderCart();
+  orderForm.reset();
+  orderStatus.textContent = 'Заказ создан!';
+  orderStatus.focus();
+});
+
+loadCart();
 renderCart();
