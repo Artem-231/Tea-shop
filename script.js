@@ -9,6 +9,8 @@ const orderForm = document.querySelector('#order-form');
 const orderStatus = document.querySelector('#order-status');
 const storageMessage = document.querySelector('#storage-message');
 const storageKey = 'tea-shop-cart';
+const loadMessage = document.querySelector('#load-message');
+const maxPacks = 99;
 const orderFields = orderForm.querySelectorAll('input, textarea');
 
 
@@ -25,6 +27,7 @@ document.querySelectorAll('.product-card').forEach(function (card) {
       return item.id === id;
     });
     if (existing) {
+      if (existing.quantity >= maxPacks) return;
       existing.quantity += 1;
     } else {
       cart.push({
@@ -48,7 +51,7 @@ function removeItem(id) {
   renderCart();
 }
 
-function renderCart() {
+function renderCart(saveChanges = true) {
   const focusedId = document.activeElement.id;
   cartList.replaceChildren();
   let total = 0;
@@ -76,6 +79,7 @@ function renderCart() {
     plus.type = 'button';
     plus.id = 'plus-' + item.id;
     plus.textContent = '+';
+    plus.disabled = item.quantity >= maxPacks;
     plus.setAttribute('aria-label', 'Увеличить количество: ' + item.name);
     const remove = document.createElement('button');
     remove.type = 'button';
@@ -90,6 +94,7 @@ function renderCart() {
       renderCart();
     });
     plus.addEventListener('click', function () {
+      if (item.quantity >= maxPacks) return;
       item.quantity += 1;
       renderCart();
     });
@@ -108,12 +113,14 @@ function renderCart() {
   checkoutButton.disabled = cart.length === 0;
   if (cart.length === 0) checkoutSection.hidden = true;
   orderStatus.textContent = '';
-  saveCart();
+  if (saveChanges) saveCart();
   const focusedButton = document.getElementById(focusedId);
   if (focusedButton && !focusedButton.disabled) {
     focusedButton.focus();
   } else if (focusedId.startsWith('minus-')) {
     document.getElementById(focusedId.replace('minus-', 'plus-')).focus();
+  } else if (focusedId.startsWith('plus-')) {
+    document.getElementById(focusedId.replace('plus-', 'minus-')).focus();
   } else if (focusedId.startsWith('remove-')) {
     document.querySelector('[data-action="add"]').focus();
   }
@@ -127,33 +134,37 @@ function saveCart() {
     localStorage.setItem(storageKey, JSON.stringify(saved));
     storageMessage.textContent = '';
   } catch (error) {
-    storageMessage.textContent = 'Не удалось сохранить корзину в этом браузере.';
+    console.warn('Не удалось записать чайную корзину:', error);
+    storageMessage.textContent = 'Корзина работает, но после обновления изменения могут потеряться.';
   }
 }
 
 function loadCart() {
+  let saved;
   try {
-    const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
-    if (!Array.isArray(saved)) return;
-    // Названия и цены берём из каталога, а не из сохранённых данных.
-    document.querySelectorAll('.product-card').forEach(function (card) {
-      const item = saved.find(function (entry) {
-        return entry && entry.id === card.dataset.productId;
-      });
-      const price = Number(card.dataset.price);
-      if (item && Number.isSafeInteger(item.quantity) && item.quantity > 0 &&
-          Number.isSafeInteger(item.quantity * price)) {
-        cart.push({
-          id: card.dataset.productId,
-          name: card.dataset.name,
-          price: price,
-          quantity: item.quantity
-        });
-      }
-    });
+    saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
   } catch (error) {
-    cart.length = 0;
+    console.warn('Не удалось прочитать чайную корзину:', error);
+    loadMessage.textContent = 'Сохранённую корзину прочитать не удалось. Выберите чай заново.';
+    return;
   }
+  if (!Array.isArray(saved)) {
+    loadMessage.textContent = 'Неверный формат сохранённой корзины. Начните новый заказ.';
+    return;
+  }
+  let skipped = 0;
+  saved.forEach(function (entry) {
+    const card = Array.from(document.querySelectorAll('.product-card')).find(function (product) {
+      return entry && entry.id === product.dataset.productId;
+    });
+    const duplicate = entry && cart.some(function (item) { return item.id === entry.id; });
+    if (!card || duplicate || !Number.isInteger(entry.quantity) || entry.quantity < 1 || entry.quantity > maxPacks) {
+      skipped += 1;
+      return;
+    }
+    cart.push({ id: entry.id, name: card.dataset.name, price: Number(card.dataset.price), quantity: entry.quantity });
+  });
+  if (skipped > 0) loadMessage.textContent = 'Некоторые позиции не восстановлены: неизвестный товар или неверное количество.';
 }
 
 checkoutButton.addEventListener('click', function () {
@@ -188,4 +199,4 @@ orderForm.addEventListener('submit', function (event) {
 });
 
 loadCart();
-renderCart();
+renderCart(false);
