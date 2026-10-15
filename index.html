@@ -25,20 +25,29 @@
 
   <main id="main">
     <section class="intro" aria-labelledby="intro-title">
-      <p>Небольшие радости каждый день</p>
-      <h1 id="intro-title">Найдите свой любимый чай</h1>
+      <p>Чай и травяные сборы</p>
+      <h1 id="intro-title">Соберите свою чайную полку</h1>
       <p>Зелёный, чёрный, улун и травяные сборы — выбирайте под настроение.</p>
-      <a href="#catalog">Перейти к коллекции</a>
+      <p>Выберите вид чая, затем добавьте нужное количество упаковок.</p>
     </section>
 
     <div class="shop-layout">
       <section id="catalog" class="catalog" aria-labelledby="catalog-title">
         <h2 id="catalog-title">Чайная коллекция</h2>
         <p>Цена указана за одну упаковку.</p>
+        <label for="tea-kind">Какой чай показать</label>
+        <select id="tea-kind">
+          <option value="all">Все виды</option>
+          <option value="green">Зелёный</option>
+          <option value="black">Чёрный</option>
+          <option value="oolong">Улун</option>
+          <option value="herbal">Травяные сборы</option>
+        </select>
+        <p id="catalog-result" role="status">В каталоге: 6</p>
         <ul class="catalog__list">
           <li class="catalog__item">
             <article class="product-card" aria-labelledby="sencha-title"
-                     data-product-id="sencha" data-name="Сенча «Утренний сад»" data-price="590">
+                     data-kind="green" data-grams="100" data-product-id="sencha" data-name="Сенча «Утренний сад»" data-price="590">
               <p class="product-card__category">Зелёный чай</p>
               <h3 id="sencha-title">Сенча «Утренний сад»</h3>
               <p>Свежий травянистый вкус с мягкой сладостью.</p>
@@ -50,7 +59,7 @@
           </li>
           <li class="catalog__item">
             <article class="product-card" aria-labelledby="jasmine-title"
-                     data-product-id="jasmine" data-name="Жасминовая жемчужина" data-price="720">
+                     data-kind="green" data-grams="100" data-product-id="jasmine" data-name="Жасминовая жемчужина" data-price="720">
               <p class="product-card__category">Зелёный чай</p>
               <h3 id="jasmine-title">Жасминовая жемчужина</h3>
               <p>Скрученные листья с нежным ароматом жасмина.</p>
@@ -62,7 +71,7 @@
           </li>
           <li class="catalog__item">
             <article class="product-card" aria-labelledby="oolong-title"
-                     data-product-id="oolong" data-name="Улун «Тёплый вечер»" data-price="680">
+                     data-kind="oolong" data-grams="100" data-product-id="oolong" data-name="Улун «Тёплый вечер»" data-price="680">
               <p class="product-card__category">Улун</p>
               <h3 id="oolong-title">Улун «Тёплый вечер»</h3>
               <p>Цветочный аромат и долгое мягкое послевкусие.</p>
@@ -74,7 +83,7 @@
           </li>
           <li class="catalog__item">
             <article class="product-card" aria-labelledby="assam-title"
-                     data-product-id="assam" data-name="Ассам «Второй завтрак»" data-price="450">
+                     data-kind="black" data-grams="100" data-product-id="assam" data-name="Ассам «Второй завтрак»" data-price="450">
               <p class="product-card__category">Чёрный чай</p>
               <h3 id="assam-title">Ассам «Второй завтрак»</h3>
               <p>Насыщенный чай с солодовыми нотами.</p>
@@ -86,7 +95,7 @@
           </li>
           <li class="catalog__item">
             <article class="product-card" aria-labelledby="rooibos-title"
-                     data-product-id="rooibos" data-name="Ройбуш с апельсином" data-price="510">
+                     data-kind="herbal" data-grams="100" data-product-id="rooibos" data-name="Ройбуш с апельсином" data-price="510">
               <p class="product-card__category">Травяной сбор</p>
               <h3 id="rooibos-title">Ройбуш с апельсином</h3>
               <p>Мягкий напиток без кофеина с цитрусовым ароматом.</p>
@@ -98,7 +107,7 @@
           </li>
           <li class="catalog__item">
             <article class="product-card" aria-labelledby="mint-title"
-                     data-product-id="mint" data-name="Мята и чабрец" data-price="390">
+                     data-kind="herbal" data-grams="80" data-product-id="mint" data-name="Мята и чабрец" data-price="390">
               <p class="product-card__category">Травяной сбор</p>
               <h3 id="mint-title">Мята и чабрец</h3>
               <p>Ароматный сбор для спокойного вечера.</p>
@@ -113,6 +122,7 @@
 
       <aside id="cart" class="cart" aria-labelledby="cart-title">
         <h2 id="cart-title">Ваша корзина</h2>
+        <p>Вес чая: <output id="cart-weight">0 г</output></p>
         <p id="cart-empty">Пока здесь пусто. Выберите чай в каталоге.</p>
         <ul id="cart-items" class="cart__items" hidden></ul>
         <p class="cart__total">Итого: <output id="cart-total" aria-live="polite">0 ₽</output></p>
@@ -155,7 +165,7 @@
     <section id="delivery" class="delivery" aria-labelledby="delivery-title">
       <h2 id="delivery-title">Доставка</h2>
       <p>В адресе укажите город, улицу, дом и квартиру.</p>
-      <p>Чайный магазин.</p>
+      <p>Вес в корзине указан без учёта упаковки.</p>
     </section>
   </main>
 

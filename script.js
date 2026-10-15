@@ -56,10 +56,13 @@ function renderCart(saveChanges = true) {
   cartList.replaceChildren();
   let total = 0;
   let count = 0;
+  let grams = 0;
 
   cart.forEach(function (item) {
     total += item.price * item.quantity;
     count += item.quantity;
+    const product = document.querySelector('[data-product-id="' + item.id + '"]');
+    grams += Number(product.dataset.grams) * item.quantity;
 
     const row = document.createElement('li');
     row.className = 'cart-row';
@@ -110,6 +113,7 @@ function renderCart(saveChanges = true) {
   cartList.hidden = cart.length === 0;
   totalOutput.textContent = formatPrice(total);
   countOutput.textContent = count;
+  document.querySelector('#cart-weight').textContent = grams + ' г';
   checkoutButton.disabled = cart.length === 0;
   if (cart.length === 0) checkoutSection.hidden = true;
   orderStatus.textContent = '';
@@ -122,7 +126,7 @@ function renderCart(saveChanges = true) {
   } else if (focusedId.startsWith('plus-')) {
     document.getElementById(focusedId.replace('plus-', 'minus-')).focus();
   } else if (focusedId.startsWith('remove-')) {
-    document.querySelector('[data-action="add"]').focus();
+    document.querySelector('.catalog__item:not([hidden]) [data-action="add"]').focus();
   }
 }
 
@@ -200,3 +204,13 @@ orderForm.addEventListener('submit', function (event) {
 
 loadCart();
 renderCart(false);
+
+document.querySelector('#tea-kind').addEventListener('change', function (event) {
+  let visible = 0;
+  document.querySelectorAll('.product-card').forEach(function (card) {
+    const matches = event.target.value === 'all' || card.dataset.kind === event.target.value;
+    card.closest('li').hidden = !matches;
+    if (matches) visible += 1;
+  });
+  document.querySelector('#catalog-result').textContent = 'Показано: ' + visible;
+});
