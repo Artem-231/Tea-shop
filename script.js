@@ -117,6 +117,8 @@ function renderCart(saveChanges = true) {
   checkoutButton.disabled = cart.length === 0;
   if (cart.length === 0) checkoutSection.hidden = true;
   orderStatus.textContent = '';
+  document.querySelector('#completed-order').hidden = true;
+  updateOrderReview();
   if (saveChanges) saveCart();
   const focusedButton = document.getElementById(focusedId);
   if (focusedButton && !focusedButton.disabled) {
@@ -173,6 +175,7 @@ function loadCart() {
 
 checkoutButton.addEventListener('click', function () {
   if (cart.length === 0) return;
+  updateOrderReview();
   checkoutSection.hidden = false;
   orderStatus.textContent = '';
   document.querySelector('#first-name').focus();
@@ -195,10 +198,15 @@ orderForm.addEventListener('submit', function (event) {
   event.preventDefault();
   if (cart.length === 0) return;
   if (!validateOrder()) return;
+  const packs = cart.reduce(function (sum, item) { return sum + item.quantity; }, 0);
+  const cost = cart.reduce(function (sum, item) { return sum + item.price * item.quantity; }, 0);
   cart.length = 0;
   renderCart();
   orderForm.reset();
   orderStatus.textContent = 'Заказ создан!';
+  const receipt = document.querySelector('#completed-order');
+  receipt.textContent = 'Упаковок: ' + packs + '. Стоимость чая: ' + formatPrice(cost) + '.';
+  receipt.hidden = false;
   orderStatus.focus();
 });
 
@@ -213,4 +221,22 @@ document.querySelector('#tea-kind').addEventListener('change', function (event) 
     if (matches) visible += 1;
   });
   document.querySelector('#catalog-result').textContent = 'Показано: ' + visible;
+});
+
+function updateOrderReview() {
+  const review = document.querySelector('#order-review');
+  review.replaceChildren();
+  let sum = 0;
+  cart.forEach(function (item) {
+    const line = document.createElement('li');
+    line.textContent = item.name + ' — ' + item.quantity + ' уп.';
+    review.append(line);
+    sum += item.price * item.quantity;
+  });
+  document.querySelector('#review-total').textContent = 'К оформлению: ' + formatPrice(sum);
+}
+
+document.querySelector('#cancel-order').addEventListener('click', function () {
+  checkoutSection.hidden = true;
+  checkoutButton.focus();
 });

@@ -135,7 +135,9 @@
 
     <section hidden id="checkout" class="checkout" aria-labelledby="checkout-title">
       <h2 id="checkout-title">Оформление заказа</h2>
-      <p>Все поля обязательны для заполнения.</p>
+      <p>Проверьте состав заказа и заполните данные получателя.</p>
+      <ul id="order-review"></ul>
+      <p id="review-total"></p>
       <form id="order-form">
         <fieldset>
           <legend>Получатель</legend>
@@ -158,9 +160,11 @@
           <textarea id="address" name="address" autocomplete="street-address" rows="3" maxlength="300" required></textarea>
         </fieldset>
         <button type="submit">Создать заказ</button>
+        <button type="button" id="cancel-order">Вернуться к корзине</button>
       </form>
     </section>
     <p id="order-status" role="status" tabindex="-1"></p>
+    <p id="completed-order" hidden></p>
 
     <section id="delivery" class="delivery" aria-labelledby="delivery-title">
       <h2 id="delivery-title">Доставка</h2>
